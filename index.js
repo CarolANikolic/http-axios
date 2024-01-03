@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 import axios from "axios";
+import generateRandomNumber from "./utils/generateRandomNumber.js";
 
 const app = express();
 const port = 3000;
@@ -28,12 +29,11 @@ app.post("/", async (req, res) => {
 
   const response = await axios.get(`https://bored-api.appbrewery.com/filter?type=${type}&participants=${participants}`);
   const result = response.data;
-  res.render("index.ejs", { activity: result[0] });
-  console.log("This is the result:", result[0])
+  const randomActivity = generateRandomNumber(result.length);
+  res.render("index.ejs", { activity: result[randomActivity] });
+
 });
 
-  // Render the index.ejs file with a single *random* activity that comes back
-  // from the API request.
   // Step 3: If you get a 404 error (resource not found) from the API request.
   // Pass an error to the index.ejs to tell the user:
   // "No activities that match your criteria."
